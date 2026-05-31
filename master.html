@@ -31,23 +31,32 @@
       gap: 12px;
       margin-top: 16px;
     }
-    button {
+    button,
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
       border: none;
       border-radius: 8px;
       padding: 12px 18px;
       font-size: 1rem;
       cursor: pointer;
       transition: transform 0.15s ease, background 0.15s ease;
+      min-width: 140px;
     }
-    button:hover {
+    button:hover,
+    .nav-link:hover {
       transform: translateY(-1px);
     }
-    button.active {
+    button.active,
+    .nav-link.active {
       background: white;
       color: #4338ca;
       box-shadow: 0 6px 12px rgba(67, 56, 202, 0.2);
     }
-    button.default {
+    button.default,
+    .nav-link.default {
       background: rgba(255, 255, 255, 0.16);
       color: white;
     }
@@ -76,23 +85,23 @@
       <h1>Master Page</h1>
       <nav>
         <button id="homeBtn" class="active" type="button" onclick="loadPage('home.html', this)">Home Page</button>
-        <button id="mynameBtn" class="default" type="button" onclick="loadPage('myname.html', this)">MyName Page</button>
+        <a id="mynameLink" class="nav-link default" href="#" onclick="loadPage('myname.html', this); return false;">MyName Page</a>
       </nav>
-      <p class="note">The Home Page loads by default. Use the buttons above to switch between Home and MyName.</p>
+      <p class="note">The Home Page loads by default inside the master container. Click the link above to load the MyName page.</p>
     </header>
     <main class="content">
       <iframe id="contentFrame" src="home.html" title="Content Frame"></iframe>
     </main>
   </div>
   <script>
-    function loadPage(page, button) {
+    function loadPage(page, element) {
       document.getElementById('contentFrame').src = page;
-      document.querySelectorAll('nav button').forEach(btn => {
+      document.querySelectorAll('nav button, .nav-link').forEach(btn => {
         btn.classList.remove('active');
         btn.classList.add('default');
       });
-      button.classList.add('active');
-      button.classList.remove('default');
+      element.classList.add('active');
+      element.classList.remove('default');
     }
   </script>
 </body>
