@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef2ff;
+      color: #111827;
+    }
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: #4338ca;
+      color: white;
+      padding: 20px 24px;
+      box-shadow: 0 6px 18px rgba(67, 56, 202, 0.18);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+    nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    button:hover {
+      transform: translateY(-1px);
+    }
+    button.active {
+      background: white;
+      color: #4338ca;
+      box-shadow: 0 6px 12px rgba(67, 56, 202, 0.2);
+    }
+    button.default {
+      background: rgba(255, 255, 255, 0.16);
+      color: white;
+    }
+    .content {
+      flex: 1;
+      padding: 18px;
+    }
+    iframe {
+      width: 100%;
+      min-height: calc(100vh - 148px);
+      border: 0;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    }
+    .note {
+      margin-top: 12px;
+      color: #374151;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>Master Page</h1>
+      <nav>
+        <button id="homeBtn" class="active" type="button" onclick="loadPage('home.html', this)">Home Page</button>
+        <button id="mynameBtn" class="default" type="button" onclick="loadPage('myname.html', this)">MyName Page</button>
+      </nav>
+      <p class="note">The Home Page loads by default. Use the buttons above to switch between Home and MyName.</p>
+    </header>
+    <main class="content">
+      <iframe id="contentFrame" src="home.html" title="Content Frame"></iframe>
+    </main>
+  </div>
+  <script>
+    function loadPage(page, button) {
+      document.getElementById('contentFrame').src = page;
+      document.querySelectorAll('nav button').forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.add('default');
+      });
+      button.classList.add('active');
+      button.classList.remove('default');
+    }
+  </script>
+</body>
+</html>
