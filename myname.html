@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top 10 Tourist Places in India</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f3f7fb;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 980px;
+      margin: 32px auto;
+      padding: 24px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    h1 {
+      margin-top: 0;
+      color: #0f172a;
+    }
+    .controls {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .controls label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #ffffff;
+      font-size: 1rem;
+    }
+    .summary {
+      margin-bottom: 16px;
+      padding: 16px;
+      border-left: 4px solid #3b82f6;
+      background: #eff6ff;
+      border-radius: 8px;
+    }
+    .place-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+      background: #ffffff;
+    }
+    .place-card h3 {
+      margin: 0 0 8px;
+      color: #111827;
+    }
+    .place-card p {
+      margin: 6px 0;
+      line-height: 1.5;
+    }
+    .place-card a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .place-card a:hover {
+      text-decoration: underline;
+    }
+    .no-results {
+      padding: 16px;
+      border: 1px dashed #9ca3af;
+      border-radius: 10px;
+      background: #f8fafc;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Top 10 Tourist Places in India</h1>
+    <p>Select the country, state, and district below to refresh the top 10 tourist places for that region.</p>
+
+    <div class="controls">
+      <div>
+        <label for="countrySelect">Country</label>
+        <select id="countrySelect">
+          <option value="india">India</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="stateSelect">State</label>
+        <select id="stateSelect"></select>
+      </div>
+
+      <div>
+        <label for="districtSelect">District</label>
+        <select id="districtSelect"></select>
+      </div>
+    </div>
+
+    <div class="summary" id="summaryBox">
+      <strong>Selected:</strong> <span id="summaryText">Country: India � State: Maharashtra � District: Mumbai</span>
+    </div>
+
+    <div id="placesList"></div>
+  </div>
+
+  <script>
+    const data = {
+      india: {
+        "Maharashtra": {
+          districts: {
+            Mumbai: [
+              {
+                name: "Gateway of India",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/ZsVrZ44vj3qo4Ypz8",
+                reason: "Iconic waterfront monument with historical significance and Arabian Sea views.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Marine Drive",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/ZZbTpHjBf2BxQwVG7",
+                reason: "Scenic coastal promenade ideal for evening walks and city skyline views.",
+                ageGroup: "Teens to seniors"
+              },
+              {
+                name: "Elephanta Caves",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/8RgQYaq7cgV5t9Y86",
+                reason: "UNESCO World Heritage site with ancient rock-cut temples.",
+                ageGroup: "History lovers"
+              },
+              {
+                name: "Chhatrapati Shivaji Terminus",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/MMmv6ogP5raBmmHk8",
+                reason: "Gothic architecture landmark and busy transport hub.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Colaba Causeway",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/3G3mTPWJ4Znw3F6P8",
+                reason: "Popular street market for souvenirs, fashion, and food.",
+                ageGroup: "Young adults"
+              },
+              {
+                name: "Sanjay Gandhi National Park",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/83yF9fCaA1j1gMAy9",
+                reason: "Green sanctuary inside the city with wildlife and hiking trails.",
+                ageGroup: "Families"
+              },
+              {
+                name: "Haji Ali Dargah",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/42YjRhU3Pd8Y5sYA6",
+                reason: "Famous sea-facing Sufi shrine built on an islet.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Juhu Beach",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/xrkBbdvD7XVVbSqf8",
+                reason: "Vibrant beach destination known for street food and sunsets.",
+                ageGroup: "Families and teens"
+              },
+              {
+                name: "Prince of Wales Museum",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/3x6tDPnD58U9hVZF9",
+                reason: "Museum housing art, archaeology, and natural history collections.",
+                ageGroup: "Culture seekers"
+              },
+              {
+                name: "Siddhivinayak Temple",
+                state: "Maharashtra",
+                district: "Mumbai",
+                map: "https://goo.gl/maps/p5w9fkzQZDkYzE8x6",
+                reason: "One of the most visited Ganesh temples in India.",
+                ageGroup: "Pilgrims and families"
+              }
+            ],
+            Pune: [
+              {
+                name: "Aga Khan Palace",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/z2Zh6vYhe9UrD8rQ8",
+                reason: "Historic landmark linked to Indias independence movement.",
+                ageGroup: "History lovers"
+              },
+              {
+                name: "Shaniwar Wada",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/7VNMgLZk8NErHZWv9",
+                reason: "19th-century fort palace with impressive architecture.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Dagadusheth Halwai Ganapati Temple",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/vxmQvMWmLZKaBsp48",
+                reason: "Famous cultural and religious landmark in Pune.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Sinhagad Fort",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/FJbbkG1hP9jJX6t47",
+                reason: "Historic hill fort offering trekking and panoramic views.",
+                ageGroup: "Adventure seekers"
+              },
+              {
+                name: "Osho Ashram",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/8NtQkZiEQfTgk5TM9",
+                reason: "Wellness retreat for meditation and spiritual learning.",
+                ageGroup: "Adults"
+              },
+              {
+                name: "Khadakwasla Dam",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/rT3EeamT3p9TRcmv7",
+                reason: "Popular lakeside spot for relaxation and sunsets.",
+                ageGroup: "Families"
+              },
+              {
+                name: "Raja Dinkar Kelkar Museum",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/AQ5MjS6MVMQjgyzD9",
+                reason: "Museum with unique Indian artifacts and craftsmanship.",
+                ageGroup: "Culture seekers"
+              },
+              {
+                name: "Parvati Hill",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/7pHP8gDkF2JgL6Qx6",
+                reason: "Historic hilltop temple complex with city views.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Shreemant Dagdusheth Halwai Ganapati Temple",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/eVdSiB3yZxD2NBcU9",
+                reason: "Popular Ganesh temple drawing devotees from across India.",
+                ageGroup: "Pilgrims"
+              },
+              {
+                name: "Pataleshwar Cave Temple",
+                state: "Maharashtra",
+                district: "Pune",
+                map: "https://goo.gl/maps/3D9QYvgk3ACG1a5h7",
+                reason: "Ancient rock-cut cave temple in the city center.",
+                ageGroup: "History lovers"
+              }
+            ]
+          }
+        },
+        "Rajasthan": {
+          districts: {
+            Jaipur: [
+              {
+                name: "Amber Fort",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/u8WKhS5ZdAqH8Gs5A",
+                reason: "Magnificent hilltop fort with palaces and views.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Hawa Mahal",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/s7XE2Zxq9yG2",
+                reason: "Famous facade with hundreds of small windows.",
+                ageGroup: "Families"
+              },
+              {
+                name: "City Palace",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/UpH2S4NxcwG2",
+                reason: "Royal palace complex with museums and courtyards.",
+                ageGroup: "Culture seekers"
+              },
+              {
+                name: "Jantar Mantar",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/8cL4Z3iQbGB2",
+                reason: "Astronomical observatory built by Maharaja Jai Singh II.",
+                ageGroup: "Students and adults"
+              },
+              {
+                name: "Nahargarh Fort",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/7GUP4gQMz2D2",
+                reason: "Fort with panoramic sunset views over Jaipur.",
+                ageGroup: "Couples and families"
+              },
+              {
+                name: "Jal Mahal",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/Ub5W4zso2PD2",
+                reason: "Water palace in the middle of Man Sagar Lake.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Albert Hall Museum",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/n3UxgHcqnDP2",
+                reason: "Historic museum with a fine collection of art and artifacts.",
+                ageGroup: "History lovers"
+              },
+              {
+                name: "Birla Mandir",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/2y1MT84tGvq",
+                reason: "Modern white marble temple on a hill.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Galta Ji Temple",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/jCLGZ8wGkmK2",
+                reason: "Panchayatana style temple complex with natural springs.",
+                ageGroup: "Pilgrims"
+              },
+              {
+                name: "Raj Mandir Cinema",
+                state: "Rajasthan",
+                district: "Jaipur",
+                map: "https://goo.gl/maps/6dpFScoSmP72",
+                reason: "Iconic movie palace and architectural landmark.",
+                ageGroup: "Young adults"
+              }
+              ],
+            Udaipur: [
+              {
+                name: "City Palace Udaipur",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/RFp9Jj6sW8K2",
+                reason: "Grand lakeside palace complex and museum.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Lake Pichola",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/DafZD9MbW7t",
+                reason: "Scenic lake with boat rides and palaces.",
+                ageGroup: "Couples and families"
+              },
+              {
+                name: "Jag Mandir",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/95s2dP1q1pG2",
+                reason: "Island palace on Lake Pichola.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Saheliyon Ki Bari",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/3eWeZabY1b12",
+                reason: "Historic royal garden with fountains and marble pavilions.",
+                ageGroup: "Families"
+              },
+              {
+                name: "Monsoon Palace",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/k3X83kFzBVP2",
+                reason: "Hilltop palace with sweeping views over the lakes.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Jagdish Temple",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/2qKv5w5H5kG2",
+                reason: "Historic Hindu temple with intricate carvings.",
+                ageGroup: "Pilgrims"
+              },
+              {
+                name: "Fateh Sagar Lake",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/mrJ6G6n4AK92",
+                reason: "Popular lakefront promenade and boat rides.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Bagore Ki Haveli",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/E3E3cZ3gZxg2",
+                reason: "Museum and cultural show in a historic mansion.",
+                ageGroup: "Culture seekers"
+              },
+              {
+                name: "Ahar Cenotaphs",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/7k1g8yQ2A6C2",
+                reason: "Ancient royal memorial complex.",
+                ageGroup: "History lovers"
+              },
+              {
+                name: "Shilpgram",
+                state: "Rajasthan",
+                district: "Udaipur",
+                map: "https://goo.gl/maps/k9zQW2MZ7bG2",
+                reason: "Craft village showcasing Rajasthani arts and culture.",
+                ageGroup: "All ages"
+              }
+            ]
+          }
+        },
+        "Kerala": {
+          districts: {
+            Kochi: [
+              {
+                name: "Fort Kochi",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/5ySg5F6Vq2s",
+                reason: "Historic coastal town with colonial heritage.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Chinese Fishing Nets",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/9cKLfX75tT12",
+                reason: "Iconic fishing structures along the waterfront.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Mattancherry Palace",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/4AB2Tv8Z5wD2",
+                reason: "Historic Dutch palace with murals and artifacts.",
+                ageGroup: "History lovers"
+              },
+              {
+                name: "Jew Town",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/631XqV7f4FU2",
+                reason: "Cultural quarter known for antiques and spice shops.",
+                ageGroup: "Adults"
+              },
+              {
+                name: "St. Francis Church",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/AvDq7aFxZzH2",
+                reason: "Old European church with historic significance.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Cherai Beach",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/NF7nMc8jZND2",
+                reason: "Scenic beach with calm waters and coconut palms.",
+                ageGroup: "Families"
+              },
+              {
+                name: "Marine Drive Kochi",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/12Dg6Z9u8rR2",
+                reason: "Popular promenade overlooking the backwaters.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Bolgatty Palace",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/4Fw6Md7UHk32",
+                reason: "Historic island palace now a hotel and resort.",
+                ageGroup: "Couples"
+              },
+              {
+                name: "Hill Palace Museum",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/jnP3beA5SMe2",
+                reason: "Museum campus with royal artifacts and gardens.",
+                ageGroup: "Culture seekers"
+              },
+              {
+                name: "Vypeen Island",
+                state: "Kerala",
+                district: "Kochi",
+                map: "https://goo.gl/maps/82NE5ZV3p8k2",
+                reason: "Quiet island with beaches and backwater views.",
+                ageGroup: "Relaxation seekers"
+              }
+            ],
+            Munnar: [
+              {
+                name: "Eravikulam National Park",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/3VQ5U4b4s2t",
+                reason: "Protected park famous for Nilgiri tahr and tea slopes.",
+                ageGroup: "Nature lovers"
+              },
+              {
+                name: "Tea Gardens",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/5WQ8JpN9y4t",
+                reason: "Rolling tea estates with scenic walks.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Mattupetty Dam",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/9MzC1T2yB3s",
+                reason: "Popular dam and boating spot surrounded by hills.",
+                ageGroup: "Families"
+              },
+              {
+                name: "Kundala Lake",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/1Ue5N7F4t7s",
+                reason: "Picturesque lake with pedal boating.",
+                ageGroup: "Couples"
+              },
+              {
+                name: "Anamudi Peak",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/1G9a5qP8N4s",
+                reason: "Highest peak in South India with trekking routes.",
+                ageGroup: "Adventure seekers"
+              },
+              {
+                name: "Echo Point",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/V3rmC6k9zA52",
+                reason: "Natural echo point surrounded by forest.",
+                ageGroup: "Families"
+              },
+              {
+                name: "Blossom Park",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/8R8C3vF5m8s",
+                reason: "Pleasant flower park with manicured gardens.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Pothamedu Viewpoint",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/S3a7nV6P8z92",
+                reason: "Panoramic viewpoint overlooking tea, coffee, and spice plantations.",
+                ageGroup: "All ages"
+              },
+              {
+                name: "Top Station",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/C9QvF5Y2t5s",
+                reason: "Scenic high-altitude viewpoint on the Kerala-Tamil Nadu border.",
+                ageGroup: "Nature lovers"
+              },
+              {
+                name: "Tea Museum",
+                state: "Kerala",
+                district: "Munnar",
+                map: "https://goo.gl/maps/T8gH3Y6K7s92",
+                reason: "Interactive museum about tea processing and history.",
+                ageGroup: "All ages"
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    const countrySelect = document.getElementById('countrySelect');
+    const stateSelect = document.getElementById('stateSelect');
+    const districtSelect = document.getElementById('districtSelect');
+    const placesList = document.getElementById('placesList');
+    const summaryText = document.getElementById('summaryText');
+
+    function populateStates() {
+      const countryKey = countrySelect.value;
+      const states = Object.keys(data[countryKey] || {});
+      stateSelect.innerHTML = '';
+
+      states.forEach((stateName) => {
+        const option = document.createElement('option');
+        option.value = stateName;
+        option.textContent = stateName;
+        stateSelect.appendChild(option);
+      });
+
+      if (states.length > 0) {
+        stateSelect.value = states[0];
+        populateDistricts();
+      } else {
+        districtSelect.innerHTML = '';
+        renderPlaces([]);
+      }
+    }
+
+    function populateDistricts() {
+      const countryKey = countrySelect.value;
+      const stateKey = stateSelect.value;
+      const districtData = data[countryKey]?.[stateKey]?.districts || {};
+      const districtNames = Object.keys(districtData);
+      districtSelect.innerHTML = '';
+
+      districtNames.forEach((districtName) => {
+        const option = document.createElement('option');
+        option.value = districtName;
+        option.textContent = districtName;
+        districtSelect.appendChild(option);
+      });
+
+      if (districtNames.length > 0) {
+        districtSelect.value = districtNames[0];
+      }
+
+      updateSummaryAndPlaces();
+    }
+
+    function updateSummaryAndPlaces() {
+      const countryLabel = countrySelect.options[countrySelect.selectedIndex]?.text || '';
+      const stateLabel = stateSelect.value || 'N/A';
+      const districtLabel = districtSelect.value || 'N/A';
+      summaryText.textContent = `Country: ${countryLabel} � State: ${stateLabel} � District: ${districtLabel}`;
+
+      const selectedPlaces = getSelectedPlaces();
+      renderPlaces(selectedPlaces);
+    }
+
+    function getSelectedPlaces() {
+      const countryKey = countrySelect.value;
+      const stateKey = stateSelect.value;
+      const districtKey = districtSelect.value;
+      const districtPlaces = data[countryKey]?.[stateKey]?.districts?.[districtKey] || [];
+      return districtPlaces.slice(0, 10);
+    }
+
+    function renderPlaces(places) {
+      placesList.innerHTML = '';
+      if (!places.length) {
+        placesList.innerHTML = '<div class="no-results">No tourist place data is available for the selected state and district.</div>';
+        return;
+      }
+
+      places.forEach((place, index) => {
+        const card = document.createElement('div');
+        card.className = 'place-card';
+        card.innerHTML = `
+          <h3>${index + 1}. ${place.name}</h3>
+          <p><strong>State:</strong> ${place.state}</p>
+          <p><strong>District:</strong> ${place.district}</p>
+          <p><strong>Google map location:</strong> <a href="${place.map}" target="_blank" rel="noopener noreferrer">View on Google Maps</a></p>
+          <p><strong>Why it is top 10:</strong> ${place.reason}</p>
+          <p><strong>Age group:</strong> ${place.ageGroup}</p>
+        `;
+        placesList.appendChild(card);
+      });
+    }
+
+    countrySelect.addEventListener('change', () => {
+      populateStates();
+    });
+
+    stateSelect.addEventListener('change', () => {
+      populateDistricts();
+    });
+
+    districtSelect.addEventListener('change', () => {
+      updateSummaryAndPlaces();
+    });
+
+    populateStates();
+  </script>
+</body>
+</html>
